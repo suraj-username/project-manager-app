@@ -1,5 +1,6 @@
 const express = require('express');
 const passport = require('passport');
+const generateToken = require('../utils/generateToken');
 const router = express.Router();
 
 // @desc    Auth with Google
@@ -12,9 +13,15 @@ router.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
-    // This is a temporary successful authentication handler.
-    // We will replace this in the next part with JWT generation.
-    res.redirect('/dashboard'); 
+    // Successful authentication, generate a token.
+    // req.user is available because Passport's `deserializeUser` has run and attached the user to the request.
+    const token = generateToken(req.user.id);
+
+    // This is the URL of our React frontend.
+    // We will redirect the user to a special route on the frontend
+    // and pass the token as a query parameter.
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    res.redirect(`${frontendUrl}/login/success?token=${token}`);
   }
 );
 
