@@ -4,8 +4,8 @@ const session = require('express-session');
 const passport = require('passport');
 const connectDB = require('./config/db');
 
-// Import the auth routes
 const authRoutes = require('./routes/auth.routes');
+const userRoutes = require('./routes/user.routes');
 
 // Load the environment variables from the .env file
 dotenv.config();
@@ -29,6 +29,7 @@ app.use(passport.initialize());
 app.use(passport.session()); // Enables persistent login sessions
 
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 const PORT = process.env.PORT || 3000;
 
