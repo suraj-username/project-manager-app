@@ -1,0 +1,4 @@
+
+### Get user profile (Protected)
+GET http://localhost:3000/api/users/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZjNhMzQwNzQ5ZjU2ZDJmZjAwMWQ5ZSIsImlhdCI6MTc2MDc5ODgxMSwiZXhwIjoxNzYzMzkwODExfQ.CI1WT18pKo-XhbzjK2DoyugojPvHoAwWb8SVPniEAdA
