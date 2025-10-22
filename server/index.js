@@ -1,3 +1,4 @@
+import projectRoutes from './routes/project.routes.js';
 const express = require('express');
 const dotenv = require('dotenv');
 const session = require('express-session');
@@ -30,6 +31,7 @@ app.use(passport.session()); // Enables persistent login sessions
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/projects',projectRoutes);
 
 const PORT = process.env.PORT || 3000;
 
