@@ -1,42 +1,360 @@
+/* Remove default Vite styles */
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
+  text-align: left;
+}
+
+/* --- Login Page --- */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+.login-button {
+  background-color: #4285F4;
+  color: white;
+  padding: 12px 24px;
+  font-size: 1.1em;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.login-button:hover {
+  background-color: #357ae8;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* --- Dashboard --- */
+.dashboard-container {
+  width: 100%;
 }
 
-.card {
-  padding: 2em;
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #333;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
-.read-the-docs {
-  color: #888;
+.logout-button {
+  background-color: #555;
+  color: white;
+}
+.logout-button:hover {
+  background-color: #777;
+}
+
+/* --- Form --- */
+.form-container {
+  background-color: #2a2a2a;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+.form-group {
+  margin-bottom: 1rem;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+.form-group input[type="text"],
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background-color: #333;
+  color: #eee;
+  box-sizing: border-box; /* Important for 100% width */
+}
+.create-button {
+  background-color: #2a9d8f;
+  color: white;
+  font-size: 1em;
+}
+.create-button:hover {
+  background-color: #264653;
+}
+
+/* --- Project List --- */
+.projects-container {
+  width: 100%;
+}
+.project-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.project-card {
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  padding: 1.5rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+.project-card h3 {
+  margin-top: 0;
+  color: #2a9d8f;
+}
+.project-card p {
+  flex-grow: 1;
+}
+.project-card ul {
+  padding-left: 20px;
+  font-size: 0.9em;
+}
+.creator-info {
+  font-size: 0.8em;
+  color: #aaa;
+  margin-bottom: 1rem;
+  display: block;
+}
+.error-message {
+  color: #e76f51;
+}
+
+/* --- Project Card Admin --- */
+.admin-controls {
+  float: right;
+  display: flex;
+  gap: 0.5rem;
+}
+.button-icon {
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+.button-icon:hover {
+  color: #fff;
+}
+.button-danger {
+  color: #e76f51;
+}
+.button-danger:hover {
+  color: #f4a261;
+}
+.team-member-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.button-remove {
+  background: none;
+  border: 1px solid #555;
+  color: #aaa;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  line-height: 18px;
+  text-align: center;
+  padding: 0;
+  cursor: pointer;
+}
+.button-remove:hover {
+  background-color: #e76f51;
+  color: white;
+  border-color: #e76f51;
+}
+.add-member-form {
+  display: flex;
+  margin-top: 1rem;
+}
+.add-member-form input {
+  flex-grow: 1;
+  border-radius: 6px 0 0 6px;
+  border: 1px solid #555;
+  background-color: #333;
+  color: #eee;
+  padding: 0.5rem;
+}
+.add-member-form button {
+  border-radius: 0 6px 6px 0;
+  border: 1px solid #555;
+  border-left: none;
+}
+
+/* --- Modal --- */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-content {
+  background-color: #2a2a2a;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  border: 1px solid #555;
+}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.button-secondary {
+  background-color: #555;
+}
+.button-secondary:hover {
+  background-color: #777;
+}
+.button-primary {
+  background-color: #2a9d8f;
+}
+.button-primary:hover {
+  background-color: #264653;
+}
+
+/* --- Header Greeting --- */
+.user-greeting {
+  font-size: 0.9em;
+  color: #aaa;
+}
+
+/* --- Kanban Board --- */
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.kanban-column {
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  border: 1px solid #444;
+  /* Add some vertical space for tasks */
+  display: flex;
+  flex-direction: column;
+}
+
+.kanban-column h3 {
+  font-size: 1.2rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #444;
+  margin: 0;
+}
+
+.kanban-column-content {
+  padding: 1rem;
+  min-height: 200px;
+  /* Allow column to grow if content overflows */
+  flex-grow: 1;
+}
+
+/* --- Task Card Enhancements --- */
+.task-card {
+  /* Existing styles */
+  border: 1px solid #555;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: #333;
+  border-radius: 5px;
+  position: relative; /* For potential absolute positioning of buttons */
+}
+.task-card h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+}
+.task-card p {
+  font-size: 0.9rem;
+  color: #aaa;
+  margin: 0 0 1rem 0; /* Add space below description */
+}
+.task-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+}
+.task-priority span,
+.task-priority-low,
+.task-priority-medium,
+.task-priority-high {
+  padding: 2px 8px;
+  border-radius: 3px;
+  display: inline-block;
+  font-weight: 500;
+}
+.task-priority-low { background-color: #5f9ea0; color: white;} /* Cadet Blue */
+.task-priority-medium { background-color: #ff8c00; color: white;} /* Dark Orange */
+.task-priority-high { background-color: #dc143c; color: white;} /* Crimson */
+
+.task-assignees {
+  color: #ccc;
+  font-style: italic;
+}
+
+.task-actions {
+  display: flex;
+  flex-wrap: wrap; /* Allow buttons to wrap on small screens */
+  gap: 0.5rem; /* Space between buttons */
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #444; /* Separator */
+}
+
+/* Smaller buttons for cards */
+.button-small {
+  padding: 0.3em 0.8em;
+  font-size: 0.85em;
+  border-radius: 6px;
+}
+/* Specific button colors */
+.button-approve { background-color: #2a9d8f; color: white; }
+.button-approve:hover { background-color: #264653; }
+.button-move { background-color: #457b9d; color: white; }
+.button-move:hover { background-color: #1d3557; }
+.button-danger { background-color: #e76f51; color: white; }
+.button-danger:hover { background-color: #f4a261; }
+.button-secondary { background-color: #555; color: white; }
+.button-secondary:hover { background-color: #777; }
+
+.priority-select {
+  padding: 0.3em 0.8em;
+  font-size: 0.85em;
+  border-radius: 6px;
+  background-color: #555;
+  color: white;
+  border: 1px solid #777;
+}
+
+
+/* --- Subtask Specific Styling --- */
+.subtask-card {
+  background: #3a3a3a; /* Slightly darker background */
+  border-left: 3px solid #5f9ea0; /* Add a visual indicator */
+}
+
+.subtask-status-pending {
+  font-style: italic;
+  color: #aaa;
+}
+.subtask-status-done {
+  font-style: italic;
+  color: #2a9d8f; /* Greenish color */
+  text-decoration: line-through;
 }
