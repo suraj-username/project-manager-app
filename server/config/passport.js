@@ -1,57 +1,59 @@
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const mongoose = require('mongoose');
-const User = require('../models/user.model');
+// server/config/passport.js
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import mongoose from 'mongoose';
+import User from '../models/user.model.js'; // Make sure this path is correct
 
-// We export a function that takes the `passport` object as an argument.
-// This allows us to pass the configured passport instance to this file from index.js.
-module.exports = function(passport) {
+// We will export this function as the default
+export default function (passport) {
   passport.use(
     new GoogleStrategy(
       {
+        // PULL THESE FROM YOUR .env FILE
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: '/api/auth/google/callback' // The URL Google will redirect to after login
+        callbackURL: '/api/auth/google/callback', // Your full callback URL
       },
-      // This function runs after Google authenticates the user.
       async (accessToken, refreshToken, profile, done) => {
+        // This is the verify callback, using modern async/await
         const newUser = {
           googleId: profile.id,
-          displayName: profile.displayName,
+          name: profile.displayName, // Changed from displayName to name
           email: profile.emails[0].value,
-          image: profile.photos[0].value,
+          // image: profile.photos[0].value, // Make sure 'image' is in your User schema
         };
 
         try {
+          // Check if user already exists
           let user = await User.findOne({ googleId: profile.id });
 
           if (user) {
-            done(null, user); // null -> no error
+            // User exists, log them in
+            return done(null, user);
           } else {
+            // Create a new user (FR1.2)
             user = await User.create(newUser);
-            done(null, user);
+            return done(null, user);
           }
         } catch (err) {
           console.error(err);
-          done(err, null);
+          return done(err, null);
         }
       }
     )
   );
 
-  // These functions are required for Passport sessions.
-  // They determine what user data to store in the session.
+  // Serializes user into the session
   passport.serializeUser((user, done) => {
-    // We store only the user's MongoDB document ID in the session.
-    done(null, user.id);
+    done(null, user.id); // Store just the user's _id in the session
   });
 
+  // Deserializes user from the session
   passport.deserializeUser(async (id, done) => {
-    // We use the ID from the session to find the full user object in the database.
     try {
       const user = await User.findById(id);
-      done(null, user);
+      done(null, user); // Attach the full user object to req.user
     } catch (err) {
       done(err, null);
     }
   });
-};
+}

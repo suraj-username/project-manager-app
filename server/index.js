@@ -1,18 +1,16 @@
-import projectRoutes from './routes/project.routes.js';
-const express = require('express');
-const dotenv = require('dotenv');
-const session = require('express-session');
-const passport = require('passport');
-const connectDB = require('./config/db');
+import 'dotenv/config';
+import projectRoutes from './routes/projectRoutes.js';
+import express from 'express';
+// ... all your other imports
+import { notFound, errorHandler } from './middleware/errorHandler.js';
+import session from 'express-session';
+import passport from 'passport';
+import configurePassport from './config/passport.js';
+configurePassport(passport);
+import connectDB from './config/db.js';
 
-const authRoutes = require('./routes/auth.routes');
-const userRoutes = require('./routes/user.routes');
-
-// Load the environment variables from the .env file
-dotenv.config();
-
-// We pass the `passport` instance to our configuration file and we configure the instance
-require('./config/passport')(passport);
+import authRoutes from './routes/auth.routes.js';
+import userRoutes from './routes/user.routes.js';
 
 connectDB();
 
@@ -38,6 +36,11 @@ const PORT = process.env.PORT || 3000;
 app.get('/', (req, res) => {
   res.send('API is running...');
 });
+// 404 Not Found handler
+app.use(notFound);
+
+// Master error handler
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

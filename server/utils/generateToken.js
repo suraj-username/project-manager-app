@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 // This function generates a signed JWT.
 // It takes the user's MongoDB ID as a payload.
@@ -7,5 +7,5 @@ const generateToken = (id) => {
     expiresIn: '30d', // The token will be valid for 30 days
   });
 };
-
-module.exports = generateToken;
+ 
+export default generateToken;

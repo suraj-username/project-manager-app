@@ -1,6 +1,7 @@
-const express = require('express');
-const passport = require('passport');
-const generateToken = require('../utils/generateToken');
+import express from 'express';
+import passport from 'passport';
+// We'll need to fix generateToken next, but let's assume it's fixed for now
+import generateToken from '../utils/generateToken.js'; 
 const router = express.Router();
 
 // @desc    Auth with Google
@@ -14,15 +15,14 @@ router.get(
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
     // Successful authentication, generate a token.
-    // req.user is available because Passport's `deserializeUser` has run and attached the user to the request.
     const token = generateToken(req.user.id);
 
     // This is the URL of our React frontend.
-    // We will redirect the user to a special route on the frontend
-    // and pass the token as a query parameter.
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    
+    // Redirect to a frontend route to handle the token
     res.redirect(`${frontendUrl}/login/success?token=${token}`);
   }
 );
 
-module.exports = router;
+export default router;

@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { protect } = require('../middleware/auth.middleware.js');
+import protect from '../middleware/auth.middleware.js';
 
 // @desc    Get user profile
 // @route   GET /api/users/profile
@@ -15,4 +15,4 @@ router.get('/profile', protect, (req, res) => { // Run the protect middleware an
   }
 });
 
-module.exports = router;
+export default router;

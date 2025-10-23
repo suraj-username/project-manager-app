@@ -9,7 +9,7 @@ import {
     addMember,
     removeMember,
 } from '../controllers/projectController.js';
-import { protect } from '../middleware/auth.middleware.js';
+import protect from '../middleware/auth.middleware.js';
 import {
     isTeamMember,
     isProjectCreator,
