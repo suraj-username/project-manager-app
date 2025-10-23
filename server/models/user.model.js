@@ -5,13 +5,13 @@ const userSchema = new mongoose.Schema({
   googleId: {
     type: String,
     required: true,
-    unique: true
-  },
-  // The user's full name provided by Google.
-  displayName: {
-    type: String,
-    required: true
-  },
+    unique: true
+  },
+  // The user's full name provided by Google.
+  name: {
+    type: String,
+    required: true,
+  },
   // The user's primary email address provided by Google.
   email: {
     type: String,

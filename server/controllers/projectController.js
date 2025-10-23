@@ -34,7 +34,7 @@ export const getMyProjects=asyncHandler(async(req,res)=>{
         ],
     })
     .populate('projectCreator','name email')
-    .populate('teamMembers','name eamil');
+    .populate('teamMembers','name email');
     res.status(200).json(projects);
 });
 // @desc Get project by ID
@@ -92,7 +92,7 @@ export const addMember=asyncHandler(async(req,res)=>{
     }
     project.teamMembers.push(user._id);
     await project.save();
-    res.status(200).json({messgae:'${user.displayName} added to the project successfully.'});
+    res.status(200).json({message:`${user.name} added to the project successfully.`});
 });
 //@desc Removing member from alloted project
 //@route DELETE /api/projects/:projectId/team/:userId

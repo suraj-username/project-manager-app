@@ -1,7 +1,5 @@
 import 'dotenv/config';
-import projectRoutes from './routes/projectRoutes.js';
 import express from 'express';
-// ... all your other imports
 import { notFound, errorHandler } from './middleware/errorHandler.js';
 import session from 'express-session';
 import passport from 'passport';
@@ -11,10 +9,14 @@ import connectDB from './config/db.js';
 
 import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
+import projectRoutes from './routes/projectRoutes.js';
+import taskRoutes from './routes/task.routes.js';
 
 connectDB();
 
 const app = express();
+
+app.use(express.json());
 
 // Session Middleware
 app.use(session({
@@ -30,6 +32,7 @@ app.use(passport.session()); // Enables persistent login sessions
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/projects',projectRoutes);
+app.use('/api/tasks', taskRoutes);
 
 const PORT = process.env.PORT || 3000;
 
