@@ -10,12 +10,10 @@ import {
   removeMember,
 } from '../controllers/projectController.js';
 
-// --- NEW TASK CONTROLLER IMPORTS ---
 import {
   createTask,
   getProjectTasks,
 } from '../controllers/task.controller.js';
-// --- END NEW IMPORTS ---
 
 import protect from '../middleware/auth.middleware.js';
 import {
@@ -44,7 +42,6 @@ router
   .delete(protect, isProjectCreator, removeMember);
 
 /*
- * --- TASK-RELATED ROUTES ---
  * These routes are nested under a project
  */
 

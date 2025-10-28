@@ -1,6 +1,3 @@
-/**
- * handle requests related to projects
- */
 import Project from '../models/Project.js';
 import User from '../models/user.model.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
@@ -34,7 +31,7 @@ export const getMyProjects=asyncHandler(async(req,res)=>{
         ],
     })
     .populate('projectCreator','name email')
-    .populate('teamMembers','name email');
+    .populate('teamMembers','name email');  
     res.status(200).json(projects);
 });
 // @desc Get project by ID

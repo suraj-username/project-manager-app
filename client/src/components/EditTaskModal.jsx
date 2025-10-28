@@ -3,7 +3,7 @@ import apiClient from '../services/apiClient';
 
 const EditTaskModal = ({ task, onClose, onTaskUpdated }) => {
   const [name, setName] = useState(task.name);
-  const [description, setDescription] = useState(task.description || ''); // Handle potentially undefined description
+  const [description, setDescription] = useState(task.description || '');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -24,8 +24,8 @@ const EditTaskModal = ({ task, onClose, onTaskUpdated }) => {
       });
 
       alert('Task updated successfully.');
-      onTaskUpdated(); // Refresh the board
-      onClose(); // Close the modal
+      onTaskUpdated();
+      onClose();
     } catch (err) {
       console.error('Error updating task:', err);
       alert(`Error updating task: ${err.message}`);

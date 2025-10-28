@@ -1,11 +1,9 @@
-// File: client/src/pages/ProjectDetailPage.jsx
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import apiClient from '../services/apiClient';
 import CreateTaskModal from '../components/CreateTaskModal';
-import TaskCard from '../components/TaskCard'; // <-- IMPORT REAL TASK CARD
+import TaskCard from '../components/TaskCard';
 
-// Define the columns for our Kanban board
 const TASK_COLUMNS = [
   'Pending Approval',
   'To Do',
@@ -25,7 +23,6 @@ const ProjectDetailPage = () => {
 
   // Memoize tasks into columns for performance
   const taskColumns = useMemo(() => {
-    // ... (no changes needed here)
     const columns = {
         'Pending Approval': [],
         'To Do': [],
@@ -44,7 +41,6 @@ const ProjectDetailPage = () => {
   const fetchData = useCallback(async () => {
     try {
       setIsLoading(true);
-      // Fetch all three in parallel
       const [projectData, tasksData, userData] = await Promise.all([
         apiClient(`/api/projects/${projectId}`),
         apiClient(`/api/projects/${projectId}/tasks`),
@@ -58,7 +54,7 @@ const ProjectDetailPage = () => {
 
       setProject(projectData);
       setTasks(tasksData);
-      setCurrentUser(userData); // <-- SAVE USER
+      setCurrentUser(userData);
       setError(null);
     } catch (err) {
       console.error(err);
@@ -72,7 +68,6 @@ const ProjectDetailPage = () => {
     fetchData();
   }, [fetchData]);
 
-  // ... (loading, error, !project checks are the same)
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -99,9 +94,7 @@ const ProjectDetailPage = () => {
 
   return (
     <div className="dashboard-container">
-      {/* Header */}
       <header className="dashboard-header">
-         {/* ... (header is the same) */}
          <div>
           <Link to="/">
             <button className="button-secondary" style={{ marginRight: '1rem' }}>Back</button>
@@ -125,11 +118,10 @@ const ProjectDetailPage = () => {
                   <TaskCard
                     key={task._id}
                     task={task}
-                    // Find subtasks for this specific task
                     subtasks={tasks.subtasks[task._id] || []}
-                    project={project} // Pass full project for team member info
+                    project={project}
                     currentUser={currentUser} // Pass user for permission checks
-                    onRefresh={fetchData} // Pass refresh function
+                    onRefresh={fetchData} // Fetch all data again on refresh
                   />
                 ))
               ) : (
@@ -142,7 +134,6 @@ const ProjectDetailPage = () => {
         ))}
       </div>
 
-      {/* Create Task Modal */}
       {showCreateTaskModal && (
         <CreateTaskModal
           projectId={projectId}

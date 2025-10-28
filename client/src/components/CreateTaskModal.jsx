@@ -1,6 +1,5 @@
-// File: client/src/components/CreateTaskModal.jsx
 import React, { useState } from 'react';
-import apiClient from '../services/apiClient'; // <-- NOW IT WORKS
+import apiClient from '../services/apiClient';
 
 const CreateTaskModal = ({
   projectId,
@@ -11,7 +10,6 @@ const CreateTaskModal = ({
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // const { toast } = useToast(); // We are not using this
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,7 +40,6 @@ const CreateTaskModal = ({
     }
   };
 
-  // This JSX now matches the style of your EditProjectModal
   return (
     <div className="modal-backdrop">
       <div className="modal-content">

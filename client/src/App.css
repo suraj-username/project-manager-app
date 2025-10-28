@@ -75,7 +75,7 @@
   border: 1px solid #555;
   background-color: #333;
   color: #eee;
-  box-sizing: border-box; /* Important for 100% width */
+  box-sizing: border-box;
 }
 .create-button {
   background-color: #2a9d8f;
@@ -266,13 +266,12 @@
 
 /* --- Task Card Enhancements --- */
 .task-card {
-  /* Existing styles */
   border: 1px solid #555;
   padding: 1rem;
   margin-bottom: 1rem;
   background: #333;
   border-radius: 5px;
-  position: relative; /* For potential absolute positioning of buttons */
+  position: relative;
 }
 .task-card h4 {
   margin: 0 0 0.5rem 0;
@@ -281,7 +280,7 @@
 .task-card p {
   font-size: 0.9rem;
   color: #aaa;
-  margin: 0 0 1rem 0; /* Add space below description */
+  margin: 0 0 1rem 0;
 }
 .task-meta {
   display: flex;
@@ -299,9 +298,9 @@
   display: inline-block;
   font-weight: 500;
 }
-.task-priority-low { background-color: #5f9ea0; color: white;} /* Cadet Blue */
-.task-priority-medium { background-color: #ff8c00; color: white;} /* Dark Orange */
-.task-priority-high { background-color: #dc143c; color: white;} /* Crimson */
+.task-priority-low { background-color: #5f9ea0; color: white;}
+.task-priority-medium { background-color: #ff8c00; color: white;}
+.task-priority-high { background-color: #dc143c; color: white;}
 
 .task-assignees {
   color: #ccc;
@@ -310,11 +309,11 @@
 
 .task-actions {
   display: flex;
-  flex-wrap: wrap; /* Allow buttons to wrap on small screens */
-  gap: 0.5rem; /* Space between buttons */
+  flex-wrap: wrap;
+  gap: 0.5rem;
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid #444; /* Separator */
+  border-top: 1px solid #444;
 }
 
 /* Smaller buttons for cards */
@@ -345,8 +344,8 @@
 
 /* --- Subtask Specific Styling --- */
 .subtask-card {
-  background: #3a3a3a; /* Slightly darker background */
-  border-left: 3px solid #5f9ea0; /* Add a visual indicator */
+  background: #3a3a3a; 
+  border-left: 3px solid #5f9ea0; 
 }
 
 .subtask-status-pending {
@@ -355,6 +354,6 @@
 }
 .subtask-status-done {
   font-style: italic;
-  color: #2a9d8f; /* Greenish color */
+  color: #2a9d8f;
   text-decoration: line-through;
 }

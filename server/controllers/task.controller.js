@@ -1,7 +1,6 @@
-// File: server/controllers/task.controller.js
 import Project from '../models/Project.js';
 import User from '../models/user.model.js';
-import Task from '../models/Task.js'; // Ensure Task is imported
+import Task from '../models/Task.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { createTaskState } from '../services/taskState/TaskStateFactory.js';
 
@@ -17,8 +16,8 @@ export const createTask = asyncHandler(async (req, res) => {
     throw new Error('Task name is required');
   }
 
-  // Ensure project exists (middleware might handle this later too)
-  const project = req.project; // Assuming isTeamMember middleware ran
+  // Ensure project exists
+  const project = req.project;
   if (!project) {
     res.status(404);
     throw new Error('Project not found');
@@ -28,13 +27,12 @@ export const createTask = asyncHandler(async (req, res) => {
     name,
     description: description || '',
     project: projectId,
-    createdBy: req.user._id, // User ID from 'protect' middleware
-    status: 'Pending Approval', // Default state
-    priority: 'Low', // Default priority
+    createdBy: req.user._id,
+    status: 'Pending Approval', // Default
+    priority: 'Low', // Default
     parentId: parentId || null,
   };
 
-  // --- SUBTASK LOGIC CHANGE ---
   if (parentId) {
     const parentTask = await Task.findById(parentId);
     if (!parentTask) {
@@ -46,13 +44,9 @@ export const createTask = asyncHandler(async (req, res) => {
        res.status(400);
        throw new Error('Cannot create a subtask under another subtask.');
     }
-    // Subtasks inherit parent priority initially & simplify status concept
-    taskData.priority = parentTask.priority; // Inherit
-    // We could add a simple boolean 'isDone' field for subtasks,
-    // but for now, we'll just manage their display/interaction on the frontend.
-    // Let's keep the standard status field but prevent frontend changes.
+    // Subtasks inherit parent priority
+    taskData.priority = parentTask.priority;
   }
-  // --- END SUBTASK LOGIC CHANGE ---
 
   const task = await Task.create(taskData);
 
@@ -69,16 +63,13 @@ export const getProjectTasks = asyncHandler(async (req, res) => {
     .populate('createdBy', 'name email') // Populate creator details
     .populate('assignees', 'name email'); // Populate assignee details
 
-  // Define priority order for sorting
   const priorityOrder = { 'High': 1, 'Medium': 2, 'Low': 3 };
 
-  // Sort primarily by priority, then maybe by creation date?
+  // Sort primarily by priority
   tasks.sort((a, b) => {
       const priorityDiff = priorityOrder[a.priority] - priorityOrder[b.priority];
       if (priorityDiff !== 0) return priorityDiff;
-      // Optional: Add secondary sort, e.g., by creation date
-      // return new Date(a.createdAt) - new Date(b.createdAt);
-      return 0; // Or keep original order if priorities match
+      return 0;
   });
 
 
@@ -98,11 +89,9 @@ export const getProjectTasks = asyncHandler(async (req, res) => {
     }
   });
 
-   // Ensure subtasks within each parent are also sorted (optional but good)
    for (const parentId in subtasksMap) {
        subtasksMap[parentId].sort((a, b) => {
-            // Subtasks don't have independent priority/status logic per user req.
-            // Sort by creation date or name perhaps?
+            // Sort subtasks by creation date
             return new Date(a.createdAt) - new Date(b.createdAt);
         });
    }
@@ -116,7 +105,7 @@ export const getProjectTasks = asyncHandler(async (req, res) => {
 // @route DELETE /api/tasks/:taskId
 // @access Private (Project Creator)
 export const deleteTask = asyncHandler(async (req, res) => {
-  const task = req.task; // Assuming isTaskProjectCreator middleware attached the task
+  const task = req.task;
 
   // Find and delete all direct subtasks first
   await Task.deleteMany({ parentId: task._id });
@@ -132,11 +121,11 @@ export const deleteTask = asyncHandler(async (req, res) => {
 // @access Private (Team Member, with specific actions restricted by state/role)
 export const updateTaskStatus = asyncHandler(async (req, res) => {
   const { action, assignees } = req.body;
-  const task = req.task; // Assuming isTaskTeamMember middleware attached the task
-  const project = req.project; // Assuming isTaskTeamMember middleware attached the project
+  const task = req.task;
+  const project = req.project;
   const user = req.user;
 
-  // Prevent status changes on subtasks directly (frontend should hide buttons)
+  // Prevent status changes on subtasks directly
   if (task.parentId) {
       res.status(400);
       throw new Error('Cannot change status of a subtask directly.');
@@ -150,12 +139,11 @@ export const updateTaskStatus = asyncHandler(async (req, res) => {
       state.approve(user);
       break;
     case 'moveToInProgress':
-      // Ensure assignees are provided and are valid IDs (basic check)
+      // Ensure assignees are provided and are valid IDs
       if (!assignees || !Array.isArray(assignees) || assignees.length === 0) {
          res.status(400);
          throw new Error('Assignees array is required to move task to In Progress.');
       }
-      // TODO: We could add validation here to check if assignees are actual team members
       state.moveToInProgress(user, assignees);
       break;
     case 'moveToDone':
@@ -186,11 +174,11 @@ export const updateTaskStatus = asyncHandler(async (req, res) => {
 // @access Private (Project Creator)
 export const changeTaskPriority = asyncHandler(async (req, res) => {
   const { priority } = req.body;
-  const task = req.task; // Assuming isTaskProjectCreator middleware attached the task
+  const task = req.task;
   const project = req.project;
   const user = req.user;
 
-   // Prevent priority changes on subtasks directly (frontend should hide buttons)
+   // Prevent priority changes on subtasks
    if (task.parentId) {
         res.status(400);
         throw new Error('Cannot change priority of a subtask directly.');
@@ -202,9 +190,8 @@ export const changeTaskPriority = asyncHandler(async (req, res) => {
     throw new Error('Invalid priority value.');
   }
 
-  // Use the state object just for the permission check inside changePriority
   const state = createTaskState(task, project);
-  state.changePriority(user, priority); // This throws if not creator, and sets task.priority
+  state.changePriority(user, priority);
 
   const updatedTask = await task.save();
 
@@ -220,7 +207,7 @@ export const changeTaskPriority = asyncHandler(async (req, res) => {
 // @access  Private (Team Member)
 export const updateTask = asyncHandler(async (req, res) => {
   const { name, description } = req.body;
-  const task = req.task; // Assuming isTaskTeamMember middleware attached the task
+  const task = req.task;
 
   // Basic validation
   if (name !== undefined && !name.trim()) {

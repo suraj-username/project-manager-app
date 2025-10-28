@@ -7,9 +7,6 @@ import React from 'react';
  */
 function LoginPage() {
   const handleLogin = () => {
-    // This doesn't use `fetch`. We just redirect the entire window
-    // to the backend route. The backend will then take over and
-    // redirect the user to Google.
     window.location.href = '/api/auth/google';
   };
 

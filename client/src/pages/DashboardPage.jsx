@@ -1,28 +1,20 @@
-// File: client/src/pages/DashboardPage.jsx
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import apiClient from '../services/apiClient'; // <-- IMPORT THE CLIENT
-import EditProjectModal from '../components/EditProjectModal'; // <-- IMPORT THE MODAL
-// import { useToast } from '../components/ui/use-toast'; // We can remove this if you don't have this component
+import apiClient from '../services/apiClient';
+import EditProjectModal from '../components/EditProjectModal';
 
-/* -------------------------------------------------------------------------- */
-/* Project Card                                                               */
-/* -------------------------------------------------------------------------- */
 const ProjectCard = ({ project, currentUser, onRefresh }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [addMemberEmail, setAddMemberEmail] = useState('');
-  // const { toast } = useToast(); // Remove this line if useToast doesn't exist
   const isCreator = project.projectCreator?._id === currentUser?._id;
 
   const handleDeleteProject = async () => {
     if (window.confirm('Are you sure you want to delete this project?')) {
       try {
         await apiClient(`/api/projects/${project._id}`, { method: 'DELETE' });
-        // toast({ title: 'Project Deleted' }); // Replaced with alert
         alert('Project Deleted');
         onRefresh();
       } catch (err) {
-        // toast({ title: 'Error', description: err.message }); // Replaced with alert
         alert(`Error deleting project: ${err.message}`);
       }
     }
@@ -34,15 +26,12 @@ const ProjectCard = ({ project, currentUser, onRefresh }) => {
     try {
       await apiClient(`/api/projects/${project._id}/team`, {
         method: 'POST',
-        // Our new client expects a 'data' object for POST/PUT
         data: { email: addMemberEmail },
       });
-      // toast({ title: 'Member Added' }); // Replaced with alert
       alert('Member Added');
       setAddMemberEmail('');
       onRefresh();
     } catch (err) {
-      // toast({ title: 'Error', description: err.message }); // Replaced with alert
       alert(`Error adding member: ${err.message}`);
     }
   };
@@ -53,11 +42,9 @@ const ProjectCard = ({ project, currentUser, onRefresh }) => {
         await apiClient(`/api/projects/${project._id}/team/${userId}`, {
           method: 'DELETE',
         });
-        // toast({ title: 'Member Removed' }); // Replaced with alert
         alert('Member Removed');
         onRefresh();
       } catch (err) {
-        // toast({ title: 'Error', description: err.message }); // Replaced with alert
         alert(`Error removing member: ${err.message}`);
       }
     }
@@ -68,7 +55,6 @@ const ProjectCard = ({ project, currentUser, onRefresh }) => {
     setShowEditModal(false);
   };
 
-  // This is your original HTML/CSS
   return (
     <>
       <div className="project-card">
@@ -86,11 +72,9 @@ const ProjectCard = ({ project, currentUser, onRefresh }) => {
           </div>
         )}
 
-        {/* --- THIS IS THE CLICKABLE LINK --- */}
         <Link to={`/project/${project._id}`}>
           <h3>{project.name}</h3>
         </Link>
-        {/* ---------------------------------- */}
 
         <p>{project.description || 'No Description'}</p>
         <small className="creator-info">
@@ -147,9 +131,6 @@ const ProjectCard = ({ project, currentUser, onRefresh }) => {
   );
 };
 
-/* -------------------------------------------------------------------------- */
-/* Dashboard Page                                                             */
-/* -------------------------------------------------------------------------- */
 const DashboardPage = () => {
   const [projects, setProjects] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
@@ -158,7 +139,6 @@ const DashboardPage = () => {
   const [projectName, setProjectName] = useState('');
   const [projectDescription, setProjectDescription] = useState('');
   const navigate = useNavigate();
-  // const { toast } = useToast(); // Removed this
 
   const fetchData = useCallback(async () => {
     try {
@@ -179,11 +159,10 @@ const DashboardPage = () => {
     } catch (err) {
       console.error(err);
       setError(err.message);
-      // toast({ title: 'Error', description: err.message }); // Removed
     } finally {
       setIsLoading(false);
     }
-  }, [navigate]); // Removed toast
+  }, [navigate]);
 
   useEffect(() => {
     fetchData();
@@ -192,7 +171,7 @@ const DashboardPage = () => {
   const handleCreateProject = async (e) => {
     e.preventDefault();
     if (!projectName) {
-      alert('Project name is required.'); // Replaced toast
+      alert('Project name is required.');
       return;
     }
     try {
@@ -203,14 +182,12 @@ const DashboardPage = () => {
           description: projectDescription,
         },
       });
-      // toast({ title: 'Success!', description: 'Project created.' }); // Replaced
       alert('Project created!');
       setProjectName('');
       setProjectDescription('');
       await fetchData();
     } catch (err) {
       console.error(err);
-      // toast({ title: 'Error', description: err.message }); // Replaced
       alert(`Error creating project: ${err.message}`);
     }
   };
@@ -220,7 +197,6 @@ const DashboardPage = () => {
     navigate('/login');
   };
 
-  // ... (rest of the component is fine)
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
